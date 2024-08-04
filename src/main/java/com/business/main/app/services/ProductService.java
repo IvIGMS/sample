@@ -33,6 +33,8 @@ public class ProductService {
     private Validations validations;
 
     public Page<ProductEntity> findAll(Pageable pageable, double priceMin, double priceMax, String id) {
+        // fixme: los parametros de priceMin y Max no pueden ser null, hay que dejar que si lo puedan ser
+        // fixme: meter los parámetros en un objeto filters como los del pageable.
         return productRepository.findAllProductEntity(pageable, priceMin, priceMax, id);
     }
 
@@ -85,6 +87,10 @@ public class ProductService {
             error = error += "Price to small/big. ";
         }
         return error;
+    }
+
+    public List<ProductEntity> getProductsForExcell() {
+        return productRepository.findAll();
     }
 }
 
