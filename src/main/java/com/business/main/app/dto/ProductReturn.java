@@ -11,6 +11,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductReturn {
+    Integer productsImportedCounter;
+    Integer productsErrorCounter;
     List<ProductEntity> productsImported;
     List<ProductEntity> productsError;
 }

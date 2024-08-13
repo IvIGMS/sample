@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,7 +19,7 @@ public interface ProductRepository extends JpaRepository<ProductEntity, UUID> {
             " AND (:priceMax IS NULL OR p.price <= :priceMax)" +
             " AND (:id IS NULL OR p.id = :id)")
     Page<ProductEntity> findAllProductEntity(Pageable pageable,
-                                             @Param("priceMin") double priceMin,
-                                             @Param("priceMax") double priceMax,
+                                             @Param("priceMin") BigDecimal priceMin,
+                                             @Param("priceMax") BigDecimal priceMax,
                                              @Param("id") String id);
 }

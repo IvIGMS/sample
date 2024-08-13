@@ -10,6 +10,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.ByteArrayOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -32,14 +34,17 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    @Value("${MAGIC_WORD}")
+    private String magicWord;
+
     @GetMapping
     public Page<ProductEntity> getAllProducts(
             @RequestParam(name = "page") int page,
             @RequestParam(name = "size") int size,
             @RequestParam(name = "sortBy", defaultValue = "name") String sortBy,
             @RequestParam(name = "direction", defaultValue = "ASC") String direction,
-            @RequestParam(name = "priceMin", required = false) double priceMin,
-            @RequestParam(name = "priceMax", required = false) double priceMax,
+            @RequestParam(name = "priceMin", required = false) BigDecimal priceMin,
+            @RequestParam(name = "priceMax", required = false) BigDecimal priceMax,
             @RequestParam(name = "id", required = false) String id)
     {
 
@@ -50,6 +55,7 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public Optional<ProductEntity> getProductById(@PathVariable UUID id) {
+        // Fixme: I'm not working
         return productService.findById(id);
     }
 
@@ -107,5 +113,10 @@ public class ProductController {
                     .contentType(MediaType.APPLICATION_OCTET_STREAM)
                     .body(out.toByteArray());
         }
+    }
+
+    @GetMapping("/secret")
+    public String keepTheSecret(){
+        return "Congratulations. The magic word is '" + magicWord + "'";
     }
 }
