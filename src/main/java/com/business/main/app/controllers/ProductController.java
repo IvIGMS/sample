@@ -4,13 +4,13 @@ import com.business.main.app.dto.ProductDTO;
 import com.business.main.app.dto.ProductReturn;
 import com.business.main.app.entities.ProductEntity;
 import com.business.main.app.services.ProductService;
-import com.business.main.app.services.ProductServiceImpl;
 import jakarta.transaction.Transactional;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -33,6 +33,9 @@ import java.util.UUID;
 public class ProductController {
     @Autowired
     private ProductService productService;
+
+    @Value("${MAGIC_WORD}")
+    private String magicWord;
 
     @GetMapping
     public Page<ProductEntity> getAllProducts(
@@ -110,5 +113,10 @@ public class ProductController {
                     .contentType(MediaType.APPLICATION_OCTET_STREAM)
                     .body(out.toByteArray());
         }
+    }
+
+    @GetMapping("/secret")
+    public String keepTheSecret(){
+        return "Congratulations. The magic word is '" + magicWord + "'";
     }
 }
