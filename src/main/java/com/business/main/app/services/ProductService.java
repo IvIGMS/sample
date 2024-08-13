@@ -17,7 +17,7 @@ import java.util.UUID;
 @Service
 public interface ProductService {
 
-    public Page<ProductEntity> findAll(Pageable pageable, BigDecimal priceMin, BigDecimal priceMax, String id);
+    public Page<ProductEntity> findAll(Pageable pageable, BigDecimal priceMin, BigDecimal priceMax, String id, String name);
 
     public Optional<ProductEntity> findById(UUID id);
 

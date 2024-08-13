@@ -31,9 +31,10 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private Validations validations;
 
-    public Page<ProductEntity> findAll(Pageable pageable, BigDecimal priceMin, BigDecimal priceMax, String id) {
+    public Page<ProductEntity> findAll(Pageable pageable, BigDecimal priceMin, BigDecimal priceMax, String id, String name) {
         // fixme: meter los parámetros en un objeto filters como los del pageable.
-        return productRepository.findAllProductEntity(pageable, priceMin, priceMax, id);
+        // fixme: filtrar por craetedAt y updatedAt (como en el del precio, un rango)
+        return productRepository.findAllProductEntity(pageable, priceMin, priceMax, id, name);
     }
 
     public Optional<ProductEntity> findById(UUID id) {

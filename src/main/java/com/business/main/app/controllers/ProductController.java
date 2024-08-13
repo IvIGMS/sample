@@ -45,12 +45,13 @@ public class ProductController {
             @RequestParam(name = "direction", defaultValue = "ASC") String direction,
             @RequestParam(name = "priceMin", required = false) BigDecimal priceMin,
             @RequestParam(name = "priceMax", required = false) BigDecimal priceMax,
-            @RequestParam(name = "id", required = false) String id)
+            @RequestParam(name = "id", required = false) String id,
+            @RequestParam(name = "name", required = false, defaultValue = "") String name)
     {
 
         Sort sort = Sort.by(Sort.Direction.fromString(direction), sortBy);
         Pageable pageable = PageRequest.of(--page, size, sort);
-        return productService.findAll(pageable, priceMin, priceMax, id);
+        return productService.findAll(pageable, priceMin, priceMax, id, name);
     }
 
     @GetMapping("/{id}")

@@ -17,9 +17,11 @@ public interface ProductRepository extends JpaRepository<ProductEntity, UUID> {
     @Query("SELECT p FROM ProductEntity p" +
             " WHERE (:priceMin IS NULL OR p.price >= :priceMin)" +
             " AND (:priceMax IS NULL OR p.price <= :priceMax)" +
-            " AND (:id IS NULL OR p.id = :id)")
+            " AND (:id IS NULL OR p.id = :id)" +
+            " AND (:name IS NULL OR :name = '' OR LOWER(p.name) LIKE LOWER(CONCAT('%', :name, '%')))")
     Page<ProductEntity> findAllProductEntity(Pageable pageable,
                                              @Param("priceMin") BigDecimal priceMin,
                                              @Param("priceMax") BigDecimal priceMax,
-                                             @Param("id") String id);
+                                             @Param("id") String id,
+                                             @Param("name") String name);
 }
