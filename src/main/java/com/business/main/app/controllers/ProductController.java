@@ -4,6 +4,7 @@ import com.business.main.app.dto.ProductDTO;
 import com.business.main.app.dto.ProductReturn;
 import com.business.main.app.entities.ProductEntity;
 import com.business.main.app.services.ProductService;
+import com.business.main.app.services.ProductServiceImpl;
 import jakarta.transaction.Transactional;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.ByteArrayOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -38,8 +40,8 @@ public class ProductController {
             @RequestParam(name = "size") int size,
             @RequestParam(name = "sortBy", defaultValue = "name") String sortBy,
             @RequestParam(name = "direction", defaultValue = "ASC") String direction,
-            @RequestParam(name = "priceMin", required = false) double priceMin,
-            @RequestParam(name = "priceMax", required = false) double priceMax,
+            @RequestParam(name = "priceMin", required = false) BigDecimal priceMin,
+            @RequestParam(name = "priceMax", required = false) BigDecimal priceMax,
             @RequestParam(name = "id", required = false) String id)
     {
 
@@ -50,6 +52,7 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public Optional<ProductEntity> getProductById(@PathVariable UUID id) {
+        // Fixme: I'm not working
         return productService.findById(id);
     }
 
