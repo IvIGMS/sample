@@ -33,6 +33,9 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private Validations validations;
 
+    @Autowired
+    private EmailService emailService;
+
     public Page<ProductEntity> findAll(Pageable pageable, Filters filters) {
         return productRepository.findAllProductEntity(pageable,
                 filters.getPriceMin(),
@@ -83,6 +86,8 @@ public class ProductServiceImpl implements ProductService {
         });
         result.setProductsImportedCounter(result.getProductsImported().size());
         result.setProductsErrorCounter(result.getProductsError().size());
+        // Notification
+        emailService.sendEmail("friasgilivan@gmail.com", "Esto es una simple prueba para ver que se puede enviar el correo.");
         return result;
     }
 
