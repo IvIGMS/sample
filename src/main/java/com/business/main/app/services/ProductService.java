@@ -2,14 +2,14 @@ package com.business.main.app.services;
 
 import com.business.main.app.dto.ProductDTO;
 import com.business.main.app.dto.ProductReturn;
-import com.business.main.app.dto.validationObject.ValidationProductDTO;
 import com.business.main.app.entities.ProductEntity;
+import com.business.main.app.utils.Filters;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -17,7 +17,7 @@ import java.util.UUID;
 @Service
 public interface ProductService {
 
-    public Page<ProductEntity> findAll(Pageable pageable, BigDecimal priceMin, BigDecimal priceMax, String id);
+    public Page<ProductEntity> findAll(Pageable pageable, Filters filters);
 
     public Optional<ProductEntity> findById(UUID id);
 
