@@ -24,6 +24,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -46,12 +47,21 @@ public class ProductController {
             @RequestParam(name = "priceMin", required = false) BigDecimal priceMin,
             @RequestParam(name = "priceMax", required = false) BigDecimal priceMax,
             @RequestParam(name = "id", required = false) String id,
+            @RequestParam(name = "createdAtMin", required = false) LocalDateTime createdAtMin,
+            @RequestParam(name = "createdAtMax", required = false) LocalDateTime createdAtMax,
             @RequestParam(name = "name", required = false, defaultValue = "") String name)
     {
+        if (createdAtMin == null) {
+            createdAtMin = LocalDateTime.of(2000, 1, 1, 0, 0);
+        }
+        if (createdAtMax == null) {
+            createdAtMax = LocalDateTime.of(2100, 1, 1, 0, 0);
+        }
 
         Sort sort = Sort.by(Sort.Direction.fromString(direction), sortBy);
         Pageable pageable = PageRequest.of(--page, size, sort);
-        return productService.findAll(pageable, priceMin, priceMax, id, name);
+
+        return productService.findAll(pageable, priceMin, priceMax, id, name, createdAtMin, createdAtMax);
     }
 
     @GetMapping("/{id}")

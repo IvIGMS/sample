@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,10 +19,16 @@ public interface ProductRepository extends JpaRepository<ProductEntity, UUID> {
             " WHERE (:priceMin IS NULL OR p.price >= :priceMin)" +
             " AND (:priceMax IS NULL OR p.price <= :priceMax)" +
             " AND (:id IS NULL OR p.id = :id)" +
-            " AND (:name IS NULL OR :name = '' OR LOWER(p.name) LIKE LOWER(CONCAT('%', :name, '%')))")
+            " AND (:name IS NULL OR :name = '' OR LOWER(p.name) LIKE LOWER(CONCAT('%', :name, '%')))" +
+            " AND (p.createdAt >= :createdAtMin)" +
+            " AND (p.createdAt <= :createdAtMax)"
+    )
     Page<ProductEntity> findAllProductEntity(Pageable pageable,
                                              @Param("priceMin") BigDecimal priceMin,
                                              @Param("priceMax") BigDecimal priceMax,
                                              @Param("id") String id,
-                                             @Param("name") String name);
+                                             @Param("name") String name,
+                                             @Param("createdAtMin") LocalDateTime createdAtMin,
+                                             @Param("createdAtMax") LocalDateTime createdAtMax
+    );
 }

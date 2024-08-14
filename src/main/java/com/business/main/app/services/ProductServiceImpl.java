@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,10 +32,10 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private Validations validations;
 
-    public Page<ProductEntity> findAll(Pageable pageable, BigDecimal priceMin, BigDecimal priceMax, String id, String name) {
+    public Page<ProductEntity> findAll(Pageable pageable, BigDecimal priceMin, BigDecimal priceMax, String id, String name, LocalDateTime createdAtMin, LocalDateTime createdAtMax) {
         // fixme: meter los parámetros en un objeto filters como los del pageable.
         // fixme: filtrar por craetedAt y updatedAt (como en el del precio, un rango)
-        return productRepository.findAllProductEntity(pageable, priceMin, priceMax, id, name);
+        return productRepository.findAllProductEntity(pageable, priceMin, priceMax, id, name, createdAtMin, createdAtMax);
     }
 
     public Optional<ProductEntity> findById(UUID id) {
