@@ -21,7 +21,9 @@ public interface ProductRepository extends JpaRepository<ProductEntity, UUID> {
             " AND (:id IS NULL OR p.id = :id)" +
             " AND (:name IS NULL OR :name = '' OR LOWER(p.name) LIKE LOWER(CONCAT('%', :name, '%')))" +
             " AND (p.createdAt >= :createdAtMin)" +
-            " AND (p.createdAt <= :createdAtMax)"
+            " AND (p.createdAt <= :createdAtMax)" +
+            " AND (p.updatedAt >= :updatedAtMin)" +
+            " AND (p.updatedAt <= :updatedAtMax)"
     )
     Page<ProductEntity> findAllProductEntity(Pageable pageable,
                                              @Param("priceMin") BigDecimal priceMin,
@@ -29,6 +31,8 @@ public interface ProductRepository extends JpaRepository<ProductEntity, UUID> {
                                              @Param("id") String id,
                                              @Param("name") String name,
                                              @Param("createdAtMin") LocalDateTime createdAtMin,
-                                             @Param("createdAtMax") LocalDateTime createdAtMax
+                                             @Param("createdAtMax") LocalDateTime createdAtMax,
+                                             @Param("updatedAtMin") LocalDateTime updatedAtMin,
+                                             @Param("updatedAtMax") LocalDateTime updatedAtMax
     );
 }

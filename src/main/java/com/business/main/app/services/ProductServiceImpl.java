@@ -6,6 +6,7 @@ import com.business.main.app.dto.validationObject.ValidationProductDTO;
 import com.business.main.app.entities.ProductEntity;
 import com.business.main.app.mappers.ProductMapper;
 import com.business.main.app.repositories.ProductRepository;
+import com.business.main.app.utils.Filters;
 import com.business.main.app.utils.Validations;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +33,16 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private Validations validations;
 
-    public Page<ProductEntity> findAll(Pageable pageable, BigDecimal priceMin, BigDecimal priceMax, String id, String name, LocalDateTime createdAtMin, LocalDateTime createdAtMax) {
-        // fixme: meter los parámetros en un objeto filters como los del pageable.
-        // fixme: filtrar por craetedAt y updatedAt (como en el del precio, un rango)
-        return productRepository.findAllProductEntity(pageable, priceMin, priceMax, id, name, createdAtMin, createdAtMax);
+    public Page<ProductEntity> findAll(Pageable pageable, Filters filters) {
+        return productRepository.findAllProductEntity(pageable,
+                filters.getPriceMin(),
+                filters.getPriceMax(),
+                filters.getId(),
+                filters.getName(),
+                filters.getDatesBundle().getCreatedAtMin(),
+                filters.getDatesBundle().getCreatedAtMax(),
+                filters.getDatesBundle().getUpdatedAtMin(),
+                filters.getDatesBundle().getUpdatedAtMax());
     }
 
     public Optional<ProductEntity> findById(UUID id) {

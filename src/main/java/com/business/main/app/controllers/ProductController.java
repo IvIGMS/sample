@@ -4,6 +4,8 @@ import com.business.main.app.dto.ProductDTO;
 import com.business.main.app.dto.ProductReturn;
 import com.business.main.app.entities.ProductEntity;
 import com.business.main.app.services.ProductService;
+import com.business.main.app.utils.DatesBundle;
+import com.business.main.app.utils.Filters;
 import jakarta.transaction.Transactional;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -26,6 +28,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -44,24 +47,39 @@ public class ProductController {
             @RequestParam(name = "size") int size,
             @RequestParam(name = "sortBy", defaultValue = "name") String sortBy,
             @RequestParam(name = "direction", defaultValue = "ASC") String direction,
+
             @RequestParam(name = "priceMin", required = false) BigDecimal priceMin,
             @RequestParam(name = "priceMax", required = false) BigDecimal priceMax,
             @RequestParam(name = "id", required = false) String id,
             @RequestParam(name = "createdAtMin", required = false) LocalDateTime createdAtMin,
             @RequestParam(name = "createdAtMax", required = false) LocalDateTime createdAtMax,
+            @RequestParam(name = "updatedAtMin", required = false) LocalDateTime updatedAtMin,
+            @RequestParam(name = "updatedAtMax", required = false) LocalDateTime updatedAtMax,
             @RequestParam(name = "name", required = false, defaultValue = "") String name)
     {
-        if (createdAtMin == null) {
-            createdAtMin = LocalDateTime.of(2000, 1, 1, 0, 0);
-        }
-        if (createdAtMax == null) {
-            createdAtMax = LocalDateTime.of(2100, 1, 1, 0, 0);
-        }
+        // Validate if some DateTime is null
+        DatesBundle datesBundle = validateDates(createdAtMin, createdAtMax, updatedAtMin, updatedAtMax);
+
+        Filters filters = Filters.builder()
+                .priceMin(priceMin)
+                .priceMax(priceMax)
+                .id(id)
+                .datesBundle(datesBundle)
+                .build();
 
         Sort sort = Sort.by(Sort.Direction.fromString(direction), sortBy);
         Pageable pageable = PageRequest.of(--page, size, sort);
 
-        return productService.findAll(pageable, priceMin, priceMax, id, name, createdAtMin, createdAtMax);
+        return productService.findAll(pageable, filters);
+    }
+
+    private DatesBundle validateDates(LocalDateTime createdAtMin, LocalDateTime createdAtMax, LocalDateTime updatedAtMin, LocalDateTime updatedAtMax) {
+        DatesBundle datesBundle = new DatesBundle();
+        datesBundle.setCreatedAtMin(Objects.requireNonNullElseGet(createdAtMin, () -> LocalDateTime.of(2000, 1, 1, 0, 0)));
+        datesBundle.setCreatedAtMax(Objects.requireNonNullElseGet(createdAtMax, () -> LocalDateTime.of(2100, 1, 1, 0, 0)));
+        datesBundle.setUpdatedAtMin(Objects.requireNonNullElseGet(updatedAtMin, () -> LocalDateTime.of(2000, 1, 1, 0, 0)));
+        datesBundle.setUpdatedAtMax(Objects.requireNonNullElseGet(updatedAtMax, () -> LocalDateTime.of(2100, 1, 1, 0, 0)));
+        return datesBundle;
     }
 
     @GetMapping("/{id}")

@@ -3,6 +3,7 @@ package com.business.main.app.services;
 import com.business.main.app.dto.ProductDTO;
 import com.business.main.app.dto.ProductReturn;
 import com.business.main.app.entities.ProductEntity;
+import com.business.main.app.utils.Filters;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,7 @@ import java.util.UUID;
 @Service
 public interface ProductService {
 
-    public Page<ProductEntity> findAll(Pageable pageable, BigDecimal priceMin, BigDecimal priceMax, String id, String name, LocalDateTime createdAtMin, LocalDateTime createdAtMax);
+    public Page<ProductEntity> findAll(Pageable pageable, Filters filters);
 
     public Optional<ProductEntity> findById(UUID id);
 
