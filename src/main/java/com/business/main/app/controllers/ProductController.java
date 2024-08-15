@@ -35,11 +35,9 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/products")
 public class ProductController {
+
     @Autowired
     private ProductService productService;
-
-    @Value("${MAGIC_WORD}")
-    private String magicWord;
 
     @GetMapping
     public Page<ProductEntity> getAllProducts(
@@ -142,10 +140,5 @@ public class ProductController {
                     .contentType(MediaType.APPLICATION_OCTET_STREAM)
                     .body(out.toByteArray());
         }
-    }
-
-    @GetMapping("/secret")
-    public String keepTheSecret(){
-        return "Congratulations. The magic word is '" + magicWord + "'";
     }
 }
