@@ -4,5 +4,5 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface EmailService {
-    public void sendEmail(String receiver, String text);
+    public void sendEmail(String receiver,String subject, String text);
 }

@@ -14,8 +14,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -87,8 +85,38 @@ public class ProductServiceImpl implements ProductService {
         result.setProductsImportedCounter(result.getProductsImported().size());
         result.setProductsErrorCounter(result.getProductsError().size());
         // Notification
-        emailService.sendEmail("friasgilivan@gmail.com", "Esto es una simple prueba para ver que se puede enviar el correo.");
+        String emailText = createTextForEmail(result);
+        // fixme: estos parametros deberían ir con la cuenta de cada admin
+        emailService.sendEmail("friasgilivan@gmail.com", "Aplicación de Productos",emailText);
         return result;
+    }
+
+    private String createTextForEmail(ProductReturn result) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("Notificación carga de productos: ").append("\n\n");
+        sb.append("Productos importados correctamente:").append("\n");
+
+        if (result.getProductsImportedCounter()>0){
+            result.getProductsImported().forEach(p -> {
+                sb.append("- ").append(p.getName()).append(".").append("\n");
+            });
+        } else {
+            sb.append("- No se han importado productos correctamente.").append("\n");
+        }
+
+        sb.append("\n").append("Productos no importados:").append("\n");
+
+        if (result.getProductsErrorCounter()>0){
+            result.getProductsError().forEach(p -> {
+                sb.append("- ").append(p.getName()).append(".").append("\n");
+            });
+        } else {
+            sb.append("- No se han importado productos con errores.").append("\n");
+        }
+
+        sb.append("\nGracias por confiar en nosotros.");
+        return sb.toString();
     }
 
     private String getString(ProductDTO p, ValidationProductDTO validationObject) {
