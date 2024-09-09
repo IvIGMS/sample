@@ -118,6 +118,7 @@ public class ProductServiceImpl implements ProductService {
         sb.append("\nGracias por confiar en nosotros.");
         System.out.println("Pruebas 1");
         System.out.println("Pruebas 2");
+        System.out.println("Pruebas 3");
         return sb.toString();
     }
 
@@ -133,6 +134,8 @@ public class ProductServiceImpl implements ProductService {
         } if(validationObject.getPriceValidation()==1){
             error = error += "Price to small/big. ";
         }
+        System.out.println("Prueba 1");
+        System.out.println("Prueba 2");
         return error;
     }
 
