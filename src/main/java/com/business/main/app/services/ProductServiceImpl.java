@@ -116,6 +116,8 @@ public class ProductServiceImpl implements ProductService {
         }
 
         sb.append("\nGracias por confiar en nosotros.");
+        System.out.println("Pruebas 1");
+        System.out.println("Pruebas 2");
         return sb.toString();
     }
 
