@@ -134,6 +134,7 @@ public class ProductServiceImpl implements ProductService {
         } if(validationObject.getPriceValidation()==1){
             error = error += "Price to small/big. ";
         }
+        System.out.println("Mis pruebas");
         System.out.println("Prueba 1");
         System.out.println("Prueba 2");
         return error;
